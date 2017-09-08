@@ -1,0 +1,19 @@
+{
+  "entrypoint": "index.html",
+  "shell": "src/vaadin-app-new.html",
+  "fragments": [
+    "src/employee-list.html",
+    "src/employee-sales.html",
+    "src/my-test.html",
+    "src/my-login.html"
+  ],
+  "sourceGlobs": [
+   "src/**/*",
+   "images/**/*",
+   "bower.json"
+  ],
+  "includeDependencies": [
+    "manifest.json",
+    "bower_components/webcomponentsjs/webcomponents-lite.min.js"
+  ]
+}

@@ -1,0 +1,68 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/vaadin-upload/vaadin-upload.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/vaadin-date-picker/vaadin-date-picker.html">
+<link rel="import" href="../bower_components/vaadin-progress-bar/vaadin-progress-bar.html">
+<link rel="import" href="../bower_components/vaadin-progress-bar/vaadin-progress-circle.html">
+<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/iron-localstorage/iron-localstorage.html">
+<link rel="import" href="../bower_components/iron-input/iron-input.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/app-route/app-location.html">
+
+<dom-module id='my-login'>
+  <style>
+    .card {
+      background-color: white;
+      margin: 24px;
+      padding: 16px;
+      width: 50%;
+      margin:10% auto;
+    }
+
+  </style>
+  <template>
+      <div class="card">
+        <app-location route="{{route}}"></app-location>
+      <div id="unauthenticated">
+            <h1>Log In</h1>
+
+            <p><strong>Log in</strong> or <strong>sign up</strong> to access secret Chuck Norris quotes!</p>
+
+            <paper-input-container>
+                <label>Username</label>
+                <input is="iron-input" id="username" type="text" bind-value="{{formData.username}}">
+            </paper-input-container>
+
+            <paper-input-container>
+                <label>Password</label>
+                <input is="iron-input" id="password" type="password" bind-value="{{formData.password}}">
+            </paper-input-container>
+
+            <div class="wrapper-btns">
+                <paper-button raised class="primary" on-tap="postLogin">Log In</paper-button>
+                <paper-button class="link" on-tap="postRegister">Sign Up</paper-button>
+            </div>
+        </div>
+    </div>
+  </template>
+  <script>
+    Polymer({
+      is: 'my-login',
+      properties: {
+        formData: {
+          type: Object,
+          value: {
+            username: 'test',
+            password: 'aaaa'
+          }
+        }
+      },
+    postLogin: function() {
+        console.log('->');
+        this.set('route.path', '/home');
+    }
+    });
+  </script>
+</dom-module>
