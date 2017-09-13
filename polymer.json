@@ -5,7 +5,8 @@
     "src/employee-list.html",
     "src/employee-sales.html",
     "src/my-test.html",
-    "src/my-login.html"
+    "src/my-login.html",
+    "src/exl-home.html"
   ],
   "sourceGlobs": [
    "src/**/*",

@@ -19,7 +19,7 @@
         --app-primary-color: #00b4f0;
         --primary-color: var(--app-primary-color);
         --app-secondary-color: #33383a;
-
+        font-size: 12px;
         display: block;
       }
 
@@ -56,7 +56,7 @@
       }
     </style>
 
-    <app-location route="{{route}}"></app-location>
+    <app-location route="{{route}}" ></app-location>
     <app-route
         route="{{route}}"
         pattern="/:page"
@@ -69,21 +69,13 @@
         attr-for-selected="name"
         role="main">
       <my-login name="my-login"></my-login>
-      <my-test name="my-test"></my-test>
-      <employee-list name="employee-list"></employee-list>
-      <employee-sales name="employee-sales" page="[[page]]"></employee-sales>
-
+      <exl-home name="exl-home"></exl-home>
     </iron-pages>
     <app-drawer-layout fullbleed style="display:none">
       <!-- Drawer content -->
       <app-drawer>
         <app-toolbar>Menu</app-toolbar>
-        <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-          <a name="employee-list" href="/employee-list">Employee list</a>
-          <a name="employee-sales" href="/employee-sales">Employee sales</a>
-          <a name="my-test" href="/my-test">My Test</a>
-          <a name="my-login" href="/my-login">Logout</a>
-        </iron-selector>
+
       </app-drawer>
 
       <!-- Main content -->
@@ -109,6 +101,11 @@
           type: String,
           reflectToAttribute: true,
           observer: '_pageChanged'
+        },
+        childPage: {
+          type: String,
+          reflectToAttribute: true,
+          observer: '_pageChanged'
         }
       },
 
@@ -122,6 +119,7 @@
 
       _pageChanged: function(page) {
         // Load page import on demand.
+        console.log('main page changed ...');
         var resolvedPageUrl = this.resolveUrl(page + '.html');
         this.importHref(resolvedPageUrl, null, null, true);
       }

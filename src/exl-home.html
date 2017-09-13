@@ -1,0 +1,379 @@
+<script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/vaadin-upload/vaadin-upload.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/vaadin-date-picker/vaadin-date-picker.html">
+<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/iron-localstorage/iron-localstorage.html">
+<link rel="import" href="../bower_components/iron-input/iron-input.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/app-layout/app-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/vaadin-icons/vaadin-icons.html">
+<link rel="import" href="../bower_components/paper-progress/paper-progress.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../bower_components/iron-collapse/iron-collapse.html">
+<link rel="import" href="../bower_components/paper-menu-button/paper-menu-button.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<dom-module id='exl-home'>
+  <custom-style>
+    <style is="custom-style" include="iron-flex iron-flex-alignment"></style>
+  </custom-style>
+    <style>
+    :host {
+      --app-primary-color: #00b4f0;
+      --primary-color: var(--app-primary-color);
+      --app-secondary-color: #33383a;
+      font-size: 12px;
+      display: block;
+    }
+
+    app-header {
+      color: #fff;
+      background-color: #425261;/*var(--app-primary-color);*/
+      z-index: 2;
+    }
+    paper-icon-button {
+      --paper-icon-button-ink-color: white;
+      width: 32px;
+      /*height: 32px;*/
+    }
+
+    app-drawer {
+      z-index: 1;
+    }
+    app-toolbar {
+      font-size: 14px;
+    }
+
+    paper-progress {
+      display: block;
+      width: 100%;
+      --paper-progress-active-color: rgba(255, 255, 255, 0.5);
+      --paper-progress-container-color: transparent;
+    }
+
+    paper-input {
+      max-width: 400px;
+      margin: auto;
+    }
+
+    iron-icon, div[suffix] {
+      color: hsl(0, 0%, 50%);
+      margin-right: 12px;
+    }
+
+    paper-button {
+        font-family: 'Roboto', 'Noto', sans-serif;
+        font-weight: normal;
+        font-size: 14px;
+        -webkit-font-smoothing: antialiased;
+    }
+    paper-button.indigo {
+    background-color: #2080d7;/*var(--paper-indigo-500);*/
+    color: white;
+    --paper-button-raised-keyboard-focus: {
+      background-color: var(--paper-pink-a200) !important;
+      color: white !important;
+    };
+    }
+    paper-button.indigo:hover {
+      background-color: var(--paper-indigo-400);
+    }
+
+    iron-pages {
+      width: 100%;
+    }
+
+
+    paper-listbox {
+        display: block;
+    }
+      paper-menu-button {
+        margin: auto;
+      }
+      iron-image {
+        padding: 1em;
+      }
+
+
+      :host .dropdown-content {
+        max-width: 300px;
+      }
+
+      .horizontal-section {
+        text-align: center;
+      }
+
+    .container, .layout {
+        /*background-color: #ccc;*/
+        /*padding: 4px;*/
+    }
+    .container div, .layout div {
+      /*background-color: white;*/
+      /*padding: 12px;*/
+      /*margin: 4px;*/
+    }
+    .right {
+      float: right;
+    }
+    .left {
+      float: left;
+    }
+
+    .drawer-list {
+      margin: 0 20px;
+    }
+
+    .drawer-list a {
+      display: block;
+      padding: 0 16px;
+      text-decoration: none;
+      color: var(--app-secondary-color);
+      line-height: 40px;
+    }
+
+    .drawer-list a.iron-selected {
+      color: var(--app-secondary-color);
+      font-weight: bold;
+    }
+
+
+    .exl-title {
+      width: 20%;
+    }
+    .exl-search {
+      width: 35%;
+      margin-bottom: 15px;
+    }
+    .exl-search paper-input {
+      width: 100%;
+      max-width:500px;
+    }
+    .exl-menus {
+      width: 45%;
+    }
+
+    .exl-file-upload {
+      background: #fff;
+      padding: 5px;
+    }
+    .exl-container {
+        /*padding: 10px;*/
+        margin: 0 auto;
+    }
+
+    .exl-header {
+      /*padding: 10px;*/
+      width: 100%;
+    }
+    .exl-claim-menu {
+      height: 100px;
+    }
+    .exl-claim-menu-item {
+        padding: 35px;
+    }
+    .exl-claim-menu-item strong {
+      font-size: 18px;
+    }
+    .exl-claim-menu-item paper-button {
+      border-radius: 20px;
+      text-transform: none;
+      font-size: 12px;
+      width: 150px;
+    }
+    .exl-recent-activity{
+      width: 250px;
+      border: 1px solid lightgray;
+      padding: 5px;
+    }
+  </style>
+
+
+  <template>
+      <app-location route="{{route}}"></app-location>
+        <div>
+          <!-- Drawer content -->
+          <app-drawer>
+            <app-toolbar ></app-toolbar>
+            <iron-selector on-iron-select="_itemSelected"
+              selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
+              <a name="employee-list" href="/exl-home/employee-list">Claims List</a>
+              <a name="employee-sales" href="/exl-home/employee-sales" on-click='changePage'>Link</a>
+              <a name="my-test" href="/exl-home/my-test">My Test</a>
+            </iron-selector>
+          </app-drawer>
+
+          <!-- Main content -->
+          <div>
+
+            <app-header>
+              <app-toolbar>
+                <paper-icon-button icon="vaadin:menu" on-click="_paperMenuTapped"></paper-icon-button>
+                <div class="exl-title">LexConnection</div>
+                <div class="exl-search">
+                  <paper-input type="search" placeholder="Search" >
+                    <paper-icon-button icon="vaadin:search" suffix ></paper-icon-button>
+                  </paper-input>
+                </div>
+                <div class="exl-menus">
+                  <div class="right">
+                  <paper-icon-button icon="vaadin:bell-o" title="Notification" ></paper-icon-button>|
+                  <paper-icon-button icon="vaadin:question-circle-o" title="Help" ></paper-icon-button>|
+                  <paper-icon-button icon="vaadin:user" title="Profile"></paper-icon-button>
+                  <span>John</span>
+                  <paper-menu-button>
+                    <paper-icon-button icon="vaadin:angle-down" slot="dropdown-trigger"></paper-icon-button>
+                    <paper-listbox slot="dropdown-content">
+                      <paper-item on-tap="postLogin">
+                        <paper-icon-button icon="vaadin:sign-out" title="Sign-Out" on-tap="postLogin" ></paper-icon-button>
+                        Sign-out
+                      </paper-item>
+
+                    </paper-listbox>
+                  </paper-menu-button>
+                </div>
+                </div>
+                <paper-progress value="10" indeterminate bottom-item></paper-progress>
+              </app-toolbar>
+            </app-header>
+            <!-- Body -->
+            <div class="exl-container">
+              <div>
+              <div class="layout horizontal layout-start">
+                <div class="exl-header">
+                  <div class="exl-claim-menu">
+                    <div class="exl-claim-menu-item">
+                      <strong> Claim List</strong>
+                      <div class="right">
+                        <paper-button raised class="indigo">Add New Claim</paper-button>
+                      </div>
+                  </div>
+                  </div>
+                  <!-- <div class="exl-file-upload">
+                      <vaadin-upload ></vaadin-upload>
+                  </div> -->
+                <iron-pages
+                  selected="[[page]]"
+                  attr-for-selected="name"
+                  >
+                <my-test name="my-test"></my-test>
+                <employee-list name="employee-list"></employee-list>
+                <employee-sales name="employee-sales"></employee-sales>
+              </iron-pages>
+              </div>
+
+              <div>
+                <iron-collapse id="collapse" opened horizontal class="exl-recent-activity">
+                  <div class="collapse-content">
+                    <div class="exl-claim-menu-item">
+                      <strong>
+                        Recent Activity <paper-icon-button icon="vaadin:angle-double-right" on-click="toggle" hidden$="{{toggleTab}}"></paper-icon-button>
+
+                      </strong>
+                    </div>
+                  </div>
+                </iron-collapse>
+                <paper-icon-button icon="vaadin:angle-double-left" on-click="toggle" hidden$="{{!toggleTab}}"></paper-icon-button>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+  </template>
+  <script>
+    Polymer({
+      is: 'exl-home',
+      properties: {
+        formData: {
+          type: Object,
+          value: {
+            username: 'test',
+            password: 'aaaa'
+          }
+        },
+        page: {
+          type: String,
+          reflectToAttribute: true,
+          observer: '_pageChanged'
+        },
+        toggleTab: {
+          type: Boolean,
+          value: true
+        }
+      },
+
+      toggle: function() {
+            this.$.collapse.toggle();
+          },
+      _paperMenuTapped: function( e ){
+        console.log('>>');
+          var drawer = this.$$('app-drawer')
+          //if( !drawer.persistent)
+          drawer.toggle();
+      },
+      postLogin: function() {
+          console.log('->');
+          this.set('route.path', '/my-login');
+      },
+      _pageChanged: function(page) {
+        // Load page import on demand.
+        console.log('page change detected...');
+        var resolvedPageUrl = this.resolveUrl(page + '.html');
+        this.importHref(resolvedPageUrl, null, null, true);
+      },
+
+      //it is a legecy callback, called when the element has been created
+     ready: function() {
+       this.page = 'employee-list';
+     },
+     changePage: function() {
+       this.page = 'employee-sales';
+     },
+
+     attributeChanged: function() {
+       console.log('attr changed..');
+     },
+     created: function() {
+       console.log('created..');
+     },
+     observers: [
+       '_routePageChanged(routeData.page)'
+     ],
+
+     _routePageChanged: function(page) {
+       console.log('route page changed...');
+       if('my-login') {
+         //this.set('route.path', '/my-login');
+        //   window.history.pushState({}, null, `/#/${page}`);
+        //   window.dispatchEvent(new CustomEvent('location-changed'));
+        //  return;
+       }
+       this.page = page;
+     },
+     _updateSelected: function(page) {
+       console.log('gotit..', page);
+     },
+
+     forceSynchronousItemUpdate : function() {
+       console.log('got it..');
+     },
+
+     _itemSelected: function(e,detail)
+         {
+                 console.log("selected detail:", detail.item.name);
+                 this.page = detail.item.name || this.page;
+        }
+    });
+
+  </script>
+</dom-module>

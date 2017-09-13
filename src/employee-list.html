@@ -1,42 +1,97 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../bower_components/vaadin-combo-box/vaadin-combo-box.html">
-<link rel="import" href="../bower_components/vaadin-grid/vaadin-grid.html">
+<link rel="import" href="../bower_components/vaadin-grid/index.html">
+<link rel="import" href="../bower_components/paper-tabs/paper-tabs.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+
 
 <dom-module id="employee-list">
   <template>
-    <style>
-      :host {
-        display: block;
-      }
+    <custom-style>
+      <style is="custom-style">
+        input[readonly] {
+          border: 2px solid transparent;
+        }
 
-      paper-material {
-        background-color: white;
-        margin: 24px;
-        padding: 16px;
-      }
-    </style>
+        input {
+          font: inherit;
+        }
+        paper-tabs {
+          font-family: 'Roboto', 'Noto', sans-serif;
+          -webkit-font-smoothing: antialiased;
+          width: 100%;
+          margin-bottom: 1px;
+          margin: 0;
+          display: flex;
+          align-items: flex-end;
+          background: #fff;
+        }
+      </style>
+    </custom-style>
+    <iron-ajax auto url="https://demo.vaadin.com/demo-data/1.0/people?count=200" handle-as="json" last-response="{{users}}"></iron-ajax>
 
-    <iron-ajax
-      auto
-      url="employees.json"
-      handle-as="json"
-      last-response="{{_employees}}">
-    </iron-ajax>
+    <paper-tabs selected="{{selected}}">
+          <paper-tab>All</paper-tab>
+          <paper-tab>Processed</paper-tab>
+          <paper-tab>Submitted</paper-tab>
+          <paper-tab>Draft</paper-tab>
+          <paper-tab>Archived</paper-tab>
+        </paper-tabs>
+        <iron-pages selected="{{selected}}">
+          <div>
+            <paper-checkbox checked="{{editing}}" style="margin-bottom: 20px">Enable Editing</paper-checkbox>
+            <vaadin-grid aria-label="Two-way Binding Example"
+            items="[[users.result]]" id="grid" on-active-item-changed="_onActiveItemChanged"
+            active-item="{{activeItem}}" size="200">
 
-    <paper-material elevation="1">
-      <vaadin-combo-box label="Filter by first name" items="[[_names]]" value="{{_filterValue}}"></vaadin-combo-box>
-      <vaadin-grid id="grid">
-        <table>
-          <colgroup>
-            <col name="firstName">
-            <col name="lastName">
-            <col name="email">
-          </colgroup>
-        </table>
-      </vaadin-grid>
-    </paper-material>
+              <template class="row-details">
+                  <div class="details">
+                    <img src="[[item.picture.large]]">
+                    <p>Hi! My name is [[item.name.first]]!</p>
+                  </div>
+              </template>
+
+              <vaadin-grid-column>
+                <template class="header">
+                  <vaadin-grid-sorter path="firstName">First Name</vaadin-grid-sorter>
+                </template>
+                <template>
+                  <div>[[item.firstName]]</div>
+                </template>
+
+              </vaadin-grid-column>
+
+              <vaadin-grid-column>
+                <template class="header">Last Name</template>
+                <template>
+                  <div>[[item.lastName]]</div>
+                </template>
+              </vaadin-grid-column>
+
+              <vaadin-grid-column>
+                <template class="header">Links</template>
+                <template>
+                  <div><a href="#">View</a></div>
+                </template>
+              </vaadin-grid-column>
+
+              <vaadin-grid-column width="200px">
+                <template class="header">Email</template>
+                <template>
+                  <div>[[item.firstName]].[[item.lastName]]@example.com</div>
+                </template>
+              </vaadin-grid-column>
+
+            </vaadin-grid>
+
+          </div>
+          <div>CONTENT TWO</div>
+          <div>CONTENT THREE</div>
+        </iron-pages>
+
 
   </template>
   <script>
@@ -59,9 +114,23 @@
         _filterValue: {
           type: String,
           value: ''
-        }
+        },
+        editing: {
+          type: Boolean,
+          value: true
+        },
+        activeItem: {
+            observer: '_activeItemChanged'
+          }
+      },
+      _activeItemChanged: function(item) {
+        this.$.grid.selectedItems = item ? [item] : [];
+        console.log(item);
       },
 
+      _onActiveItemChanged: function(e) {
+          this.$.grid.expandedItems = [e.detail.value];
+        },
       observers: [
         '_applyFilter(_filterValue, _employees)'
       ],
