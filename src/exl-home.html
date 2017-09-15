@@ -27,13 +27,18 @@
   <custom-style>
     <style is="custom-style" include="iron-flex iron-flex-alignment"></style>
   </custom-style>
-    <style>
+  <style>
     :host {
       --app-primary-color: #00b4f0;
       --primary-color: var(--app-primary-color);
       --app-secondary-color: #33383a;
       font-size: 12px;
       display: block;
+      --paper-input-container-color: #fff;
+      --paper-input-container-input-color: #fff;
+      --paper-input-container-input {
+        font-size: 12px;
+      }
     }
 
     app-header {
@@ -50,8 +55,8 @@
     app-drawer {
       z-index: 1;
     }
-    app-toolbar {
-      font-size: 14px;
+    *, app-toolbar, paper-item, vaddin-grid {
+      font-size: 12px !important;
     }
 
     paper-progress {
@@ -78,7 +83,7 @@
         -webkit-font-smoothing: antialiased;
     }
     paper-button.indigo {
-    background-color: #2080d7;/*var(--paper-indigo-500);*/
+    background-color: #ff7878;/*var(--paper-indigo-500);*/
     color: white;
     --paper-button-raised-keyboard-focus: {
       background-color: var(--paper-pink-a200) !important;
@@ -86,7 +91,7 @@
     };
     }
     paper-button.indigo:hover {
-      background-color: var(--paper-indigo-400);
+      background-color: #ff5959;/*var(--paper-indigo-400);*/
     }
 
     iron-pages {
@@ -97,21 +102,30 @@
     paper-listbox {
         display: block;
     }
-      paper-menu-button {
-        margin: auto;
+    paper-menu-button {
+      margin: auto;
+      --paper-menu-button-dropdown-background: red;
+      --paper-menu-button-dropdown {
+        max-width: 200px;
+        top: 60px;
       }
-      iron-image {
-        padding: 1em;
-      }
+    }
+
+    paper-item {
+      font-size: 12px;
+    }
+    iron-image {
+      padding: 1em;
+    }
 
 
-      :host .dropdown-content {
-        max-width: 300px;
-      }
+    :host .dropdown-content {
+      max-width: 300px;
+    }
 
-      .horizontal-section {
-        text-align: center;
-      }
+    .horizontal-section {
+      text-align: center;
+    }
 
     .container, .layout {
         /*background-color: #ccc;*/
@@ -146,6 +160,11 @@
       font-weight: bold;
     }
 
+    .search {
+        --paper-input-container-input: {
+          font-size: 12px;
+        };
+      }
 
     .exl-title {
       width: 20%;
@@ -158,6 +177,11 @@
       width: 100%;
       max-width:500px;
     }
+
+    .exl-search ::paper-input > input {
+        background: orange;
+        color: red;
+      }
     .exl-menus {
       width: 45%;
     }
@@ -182,7 +206,7 @@
         padding: 35px;
     }
     .exl-claim-menu-item strong {
-      font-size: 18px;
+      /*font-size: 18px;*/
     }
     .exl-claim-menu-item paper-button {
       border-radius: 20px;
@@ -190,11 +214,28 @@
       font-size: 12px;
       width: 150px;
     }
-    .exl-recent-activity{
-      width: 250px;
-      border: 1px solid lightgray;
-      padding: 5px;
+    .exl-right-panel {
+      border-left: 1px solid lightgray;
     }
+    .exl-right-panel paper-icon-button {
+      position: relative;
+      top: 35px;
+      border: 1px solid lightblue;
+      border-radius: 5px;
+      right: 35px;
+    }
+    .exl-right-panel paper-icon-button.expand {
+      position: absolute;
+      top:97px;
+      right:2px;
+    }
+    .exl-recent-activity{
+      width: 340px;
+      padding: 5px;
+      height: 100%;
+    }
+    [hidden] { display: none }
+
   </style>
 
 
@@ -220,7 +261,7 @@
                 <paper-icon-button icon="vaadin:menu" on-click="_paperMenuTapped"></paper-icon-button>
                 <div class="exl-title">LexConnection</div>
                 <div class="exl-search">
-                  <paper-input type="search" placeholder="Search" >
+                  <paper-input type="search" placeholder="Search" id="search" class="search">
                     <paper-icon-button icon="vaadin:search" suffix ></paper-icon-button>
                   </paper-input>
                 </div>
@@ -230,14 +271,13 @@
                   <paper-icon-button icon="vaadin:question-circle-o" title="Help" ></paper-icon-button>|
                   <paper-icon-button icon="vaadin:user" title="Profile"></paper-icon-button>
                   <span>John</span>
-                  <paper-menu-button>
+                  <paper-menu-button horizontal-align="" vertical-align="top">
                     <paper-icon-button icon="vaadin:angle-down" slot="dropdown-trigger"></paper-icon-button>
                     <paper-listbox slot="dropdown-content">
                       <paper-item on-tap="postLogin">
                         <paper-icon-button icon="vaadin:sign-out" title="Sign-Out" on-tap="postLogin" ></paper-icon-button>
                         Sign-out
                       </paper-item>
-
                     </paper-listbox>
                   </paper-menu-button>
                 </div>
@@ -271,18 +311,18 @@
               </iron-pages>
               </div>
 
-              <div>
+              <div class="exl-right-panel">
+                   <paper-icon-button icon="vaadin:angle-double-left" class="expand" on-click="toggle" hidden="{{!toggleTab}}"></paper-icon-button>
+                  <paper-icon-button icon="vaadin:angle-double-right"  on-click="toggle" hidden$="{{toggleTab}}"></paper-icon-button>
                 <iron-collapse id="collapse" opened horizontal class="exl-recent-activity">
                   <div class="collapse-content">
-                    <div class="exl-claim-menu-item">
+                    <div hidden$="{{toggleTab}}">
                       <strong>
-                        Recent Activity <paper-icon-button icon="vaadin:angle-double-right" on-click="toggle" hidden$="{{toggleTab}}"></paper-icon-button>
-
+                        Recent Activity
                       </strong>
                     </div>
                   </div>
                 </iron-collapse>
-                <paper-icon-button icon="vaadin:angle-double-left" on-click="toggle" hidden$="{{!toggleTab}}"></paper-icon-button>
 
               </div>
             </div>
@@ -294,13 +334,6 @@
     Polymer({
       is: 'exl-home',
       properties: {
-        formData: {
-          type: Object,
-          value: {
-            username: 'test',
-            password: 'aaaa'
-          }
-        },
         page: {
           type: String,
           reflectToAttribute: true,
@@ -308,13 +341,15 @@
         },
         toggleTab: {
           type: Boolean,
-          value: true
+          value: false
         }
       },
 
       toggle: function() {
-            this.$.collapse.toggle();
-          },
+        this.$.collapse.toggle();
+        this.toggleTab = !this.toggleTab;
+
+      },
       _paperMenuTapped: function( e ){
         console.log('>>');
           var drawer = this.$$('app-drawer')

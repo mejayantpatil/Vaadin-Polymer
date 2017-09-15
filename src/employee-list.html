@@ -6,12 +6,23 @@
 <link rel="import" href="../bower_components/vaadin-grid/index.html">
 <link rel="import" href="../bower_components/paper-tabs/paper-tabs.html">
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
-
+<link rel="import" href="../bower_components/iron-collapse/iron-collapse.html">
 
 <dom-module id="employee-list">
   <template>
     <custom-style>
       <style is="custom-style">
+        iron-pages {
+          padding: 20px;
+          padding-top: 40px;
+          background-color: #fff;
+        }
+        paper-icon-button {
+          width: 15px;
+          color: #d3d3d3;
+          padding: 0px;
+          height: auto;
+        }
         input[readonly] {
           border: 2px solid transparent;
         }
@@ -28,11 +39,30 @@
           display: flex;
           align-items: flex-end;
           background: #fff;
+          font-size: 12px;
+          border-bottom: 1px solid #d3d3d3;
+        }
+        paper-tabs paper-tab paper-ripple {
+          color: #ff7878;
+        }
+
+        .row-details {
+          padding: 20px;
+          padding-top: 30px;
+          background-color: lightgray;
+
+        }
+        .row-details vaadin-grid {
+          height: 200px;
+        }
+        .claim-status {
+          color: #97d056;
+          width: 10px;
+          margin-right: 10px;
         }
       </style>
     </custom-style>
     <iron-ajax auto url="https://demo.vaadin.com/demo-data/1.0/people?count=200" handle-as="json" last-response="{{users}}"></iron-ajax>
-
     <paper-tabs selected="{{selected}}">
           <paper-tab>All</paper-tab>
           <paper-tab>Processed</paper-tab>
@@ -48,40 +78,97 @@
             active-item="{{activeItem}}" size="200">
 
               <template class="row-details">
-                  <div class="details">
+                <div class="row-details">
+                  <vaadin-grid
+                  items="[[users.result]]"
+                   size="1">
+
+                  <vaadin-grid-column  flex-grow="0">
+                    <template class="header">#</template>
+                    <template>[[index]]</template>
+                  </vaadin-grid-column>
+
+                  <vaadin-grid-column>
+                    <template class="header">
+                      <vaadin-grid-sorter path="firstName">CLAIM ID</vaadin-grid-sorter>
+                    </template>
+                    <template>
+                      <div>[[item.firstName]]</div>
+                    </template>
+
+                  </vaadin-grid-column>
+
+                  <vaadin-grid-column>
+                    <template class="header">MATTER NAME</template>
+                    <template>
+                      <div>[[item.lastName]]</div>
+                    </template>
+                  </vaadin-grid-column>
+
+                </vaadin-grid>
+                  <iron-collapse id="collapse" opened horizontal class="exl-recent-activity">
                     <img src="[[item.picture.large]]">
-                    <p>Hi! My name is [[item.name.first]]!</p>
-                  </div>
+                    <p>Hi! My name is [[item.firstName]]!</p>
+                  </iron-collapse>
+                  <button on-click="toggleGrid">toggle Grid</button>
+                </div>
               </template>
 
-              <vaadin-grid-column>
+              <vaadin-grid-column width="50px">
                 <template class="header">
-                  <vaadin-grid-sorter path="firstName">First Name</vaadin-grid-sorter>
+                  CLAIM ID
                 </template>
                 <template>
-                  <div>[[item.firstName]]</div>
+                  <div>
+                    <paper-icon-button icon="vaadin:circle" class="claim-status"></paper-icon-button>
+                    <a href="#">CAD-XTR</a>
+                  </div>
                 </template>
 
               </vaadin-grid-column>
 
               <vaadin-grid-column>
-                <template class="header">Last Name</template>
+                <template class="header">
+                  <vaadin-grid-sorter path="matterName">MATTER NAME</vaadin-grid-sorter>
+                </template>
                 <template>
                   <div>[[item.lastName]]</div>
                 </template>
               </vaadin-grid-column>
 
               <vaadin-grid-column>
-                <template class="header">Links</template>
+                <template class="header">
+                  <vaadin-grid-sorter path="attorney">ATTORNEY</vaadin-grid-sorter>
+                </template>
                 <template>
-                  <div><a href="#">View</a></div>
+                  <div>Tonny Sandler</div>
                 </template>
               </vaadin-grid-column>
 
-              <vaadin-grid-column width="200px">
-                <template class="header">Email</template>
+              <vaadin-grid-column>
+                <template class="header">
+                  <vaadin-grid-sorter path="createdOn">CREATED ON</vaadin-grid-sorter>
+                </template>
                 <template>
-                  <div>[[item.firstName]].[[item.lastName]]@example.com</div>
+                  12/12/2016
+                </template>
+              </vaadin-grid-column>
+              <vaadin-grid-column width='30px'>
+                <template class="header">BATCHES</template>
+                <template>
+                  5
+                </template>
+              </vaadin-grid-column>
+              <vaadin-grid-column width='30px'>
+                <template class="header">FILES</template>
+                <template>
+                1
+                </template>
+              </vaadin-grid-column>
+              <vaadin-grid-column width="10px">
+                <template class="header"></template>
+                <template>
+                  <paper-icon-button icon="vaadin:chevron-circle-down-o" on-click="expandGrid" data-index="[[index]]" hidden$="{{expanded}}"></paper-icon-button>
                 </template>
               </vaadin-grid-column>
 
@@ -91,14 +178,16 @@
           <div>CONTENT TWO</div>
           <div>CONTENT THREE</div>
         </iron-pages>
-
-
   </template>
   <script>
     Polymer({
       is: 'employee-list',
 
       properties: {
+        expanded: {
+          type: Boolean,
+          value: false
+        },
         _names: {
           type: Array,
           value: function() {
@@ -123,13 +212,22 @@
             observer: '_activeItemChanged'
           }
       },
+      expandGrid: function(e) {
+        this.expanded ? this.$.grid.expandedItems =[] :
+        this.$.grid.expandedItems = [this.users.result[e.model.index]];
+        this.expanded = !this.expanded;
+
+      },
+      toggleGrid: function() {
+        this.$.collapse.toggle();
+      },
       _activeItemChanged: function(item) {
         this.$.grid.selectedItems = item ? [item] : [];
         console.log(item);
       },
 
       _onActiveItemChanged: function(e) {
-          this.$.grid.expandedItems = [e.detail.value];
+        //  this.$.grid.expandedItems = [e.detail.value];
         },
       observers: [
         '_applyFilter(_filterValue, _employees)'
