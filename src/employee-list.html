@@ -64,9 +64,14 @@
           width: 10px;
           margin-right: 10px;
         }
+        .right {
+          float: right;
+        }
+        [hidden] { display: none }
       </style>
     </custom-style>
-    <iron-ajax auto url="https://demo.vaadin.com/demo-data/1.0/people?count=200" handle-as="json" last-response="{{users}}"></iron-ajax>
+    <iron-ajax auto url="https://demo.vaadin.com/demo-data/1.0/people?count=2" handle-as="json" last-response="{{users}}"></iron-ajax>
+    {{console.log(user)}}
     <paper-tabs selected="{{selected}}">
           <paper-tab>All</paper-tab>
           <paper-tab>Processed</paper-tab>
@@ -77,15 +82,23 @@
         <iron-pages selected="{{selected}}">
           <div>
             <paper-checkbox checked="{{editing}}" style="margin-bottom: 20px">Enable Editing</paper-checkbox>
+
             <vaadin-grid aria-label="Two-way Binding Example"
             items="[[users.result]]" id="grid" on-active-item-changed="_onActiveItemChanged"
-            active-item="{{activeItem}}" size="200">
+            active-item="{{activeItem}}" size="2">
 
               <template class="row-details">
                 <div class="row-details">
+                  <div class="">
+                    <iron-collapse id="collapse" opened class="exl-recent-activity" hidden="{{flag}}">
+                      <img src="[[item.picture.large]]">
+                      <p>Hi! My name is [[item.firstName]]!</p>
+                    </iron-collapse>
+                    <button on-click="toggleGrid" class="">toggle Grid</button>
+                  </div>
                   <vaadin-grid
                   items="[[users.result]]"
-                   size="1">
+                   size="2">
 
                   <vaadin-grid-column  flex-grow="0">
                     <template class="header">#</template>
@@ -110,11 +123,7 @@
                   </vaadin-grid-column>
 
                 </vaadin-grid>
-                  <iron-collapse id="collapse" opened horizontal class="exl-recent-activity">
-                    <img src="[[item.picture.large]]">
-                    <p>Hi! My name is [[item.firstName]]!</p>
-                  </iron-collapse>
-                  <button on-click="toggleGrid">toggle Grid</button>
+
                 </div>
               </template>
 
@@ -173,6 +182,7 @@
                 <template class="header"></template>
                 <template>
                   <paper-icon-button icon="vaadin:chevron-circle-down-o" on-click="expandGrid" data-index="[[index]]" hidden$="{{expanded}}"></paper-icon-button>
+                  <paper-icon-button icon="vaadin:chevron-circle-up-o" on-click="expandGrid" data-index="[[index]]" hidden$="{{!expanded}}"></paper-icon-button>
                 </template>
               </vaadin-grid-column>
 
@@ -214,16 +224,31 @@
         },
         activeItem: {
             observer: '_activeItemChanged'
-          }
+          },
+        flag: {
+          type: Boolean,
+          value: true
+        },
+        data: {
+          type: Boolean,
+          notify: true
+        }
       },
+
       expandGrid: function(e) {
         this.expanded ? this.$.grid.expandedItems =[] :
         this.$.grid.expandedItems = [this.users.result[e.model.index]];
         this.expanded = !this.expanded;
 
       },
+      ready: function(){
+            this.successCallback = this.successCallback || function(){};
+
+      },
       toggleGrid: function() {
-        this.$.collapse.toggle();
+        this.flag = !this.flag;
+        this.data = this.flag;
+        //this.$.collapse.toggle();
       },
       _activeItemChanged: function(item) {
         this.$.grid.selectedItems = item ? [item] : [];

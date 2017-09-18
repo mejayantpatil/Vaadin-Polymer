@@ -23,10 +23,25 @@
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+
+
 <dom-module id='exl-home'>
   <custom-style>
     <style is="custom-style" include="iron-flex iron-flex-alignment"></style>
   </custom-style>
+  <custom-style>
+    <style is="custom-style">
+    .header {
+      padding: 8px 24px;
+    }
+    .footer {
+      padding: 8px 24px;
+      text-align: right;
+    }
+  </style>
+</custom-style>
+
   <style>
     :host {
       --app-primary-color: #00b4f0;
@@ -311,26 +326,37 @@
                   <div class="exl-claim-menu">
                     <div class="exl-claim-menu-item">
                       <strong> Claim List</strong>
+                      {{data}}
                       <div class="right">
-                        <paper-button raised class="indigo">Add New Claim</paper-button>
+                        <paper-button raised class="indigo" on-click="openModal">Add New Claim</paper-button>
                       </div>
+                      <paper-dialog id="dialog" modal role="alertdialog">
+                          <h2 class="header">Scrollable</h2>
+                        <paper-dialog-scrollable>
+                          <p>Uplaod file to create new claim</p>
+                          <vaadin-upload ></vaadin-upload>
+                        </paper-dialog-scrollable>
+                        <div class="buttons footer">
+                          <paper-button dialog-dismiss>Close</paper-button>
+                        </div>
+                      </paper-dialog>
                   </div>
                   </div>
                   <!-- <div class="exl-file-upload">
-                      <vaadin-upload ></vaadin-upload>
+
                   </div> -->
                 <iron-pages
                   selected="[[page]]"
                   attr-for-selected="name"
                   >
                 <my-test name="my-test"></my-test>
-                <employee-list name="employee-list"></employee-list>
+                <employee-list name="employee-list" data="{{data}}"></employee-list>
                 <employee-sales name="employee-sales"></employee-sales>
               </iron-pages>
               </div>
 
               <div class="exl-right-panel">
-                   <paper-icon-button icon="vaadin:angle-double-left" class="expand" on-click="toggle" hidden="{{!toggleTab}}"></paper-icon-button>
+                   <paper-icon-button icon="vaadin:angle-double-left" class="expand" on-click="toggle" hidden$="{{!toggleTab}}"></paper-icon-button>
                   <paper-icon-button icon="vaadin:angle-double-right"  on-click="toggle" hidden$="{{toggleTab}}"></paper-icon-button>
                 <iron-collapse id="collapse" opened horizontal class="exl-recent-activity">
                   <div class="collapse-content">
@@ -407,6 +433,14 @@
         toggleTab: {
           type: Boolean,
           value: false
+        },
+        user: {
+          type: Object,
+          value: {name: 'test'}
+        },
+        data: {
+          type: Boolean,
+          value: false
         }
       },
 
@@ -414,6 +448,9 @@
         this.$.collapse.toggle();
         this.toggleTab = !this.toggleTab;
 
+      },
+      openModal: function() {
+        this.$.dialog.open();
       },
       _paperMenuTapped: function( e ){
         console.log('>>');
