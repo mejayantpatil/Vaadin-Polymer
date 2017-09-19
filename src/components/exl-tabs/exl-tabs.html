@@ -1,0 +1,49 @@
+<link rel="import" href="../../../bower_components/paper-tabs/paper-tabs.html">
+<link rel="import" href="../../../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../../../bower_components/iron-collapse/iron-collapse.html">
+<link rel="import" href="../exl-grid/exl-grid.html">
+
+<dom-module id="exl-tabs">
+  <template>
+    <custom-style>
+      <style>
+        iron-pages {
+          padding: 20px;
+          padding-top: 40px;
+          background-color: #fff;
+        }
+        paper-tabs {
+          font-family: 'Roboto', 'Noto', sans-serif;
+          -webkit-font-smoothing: antialiased;
+          width: 100%;
+          margin-bottom: 1px;
+          margin: 0;
+          display: flex;
+          align-items: flex-end;
+          background: #fff;
+          font-size: 12px;
+          border-bottom: 1px solid #d3d3d3;
+        }
+        paper-tabs paper-tab paper-ripple {
+          color: #ff7878;
+        }
+
+      </style>
+    </custom-style>
+    <paper-tabs selected="{{selected}}">
+          <paper-tab>All</paper-tab>
+          <paper-tab>Processed</paper-tab>
+          <paper-tab>Submitted</paper-tab>
+          <paper-tab>Draft</paper-tab>
+          <paper-tab>Archived</paper-tab>
+        </paper-tabs>
+        <iron-pages selected="{{selected}}">
+          <exl-grid items="{{selected}}"></exl-grid>
+          <exl-grid items="{{selected}}"></exl-grid>
+          <exl-grid items="{{selected}}"></exl-grid>
+          <exl-grid items="{{selected}}"></exl-grid>
+          <exl-grid items="{{selected}}"></exl-grid>
+        </iron-pages>
+  </template>
+  <script src="exl-tabs.js"></script>
+</dom-module>

@@ -1,0 +1,58 @@
+<link rel="import" href="../../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../../../bower_components/iron-collapse/iron-collapse.html">
+<link rel="import" href="../../../bower_components/paper-checkbox/paper-checkbox.html">
+
+<dom-module id="exl-filters">
+  <template>
+    <custom-style>
+      <style>
+        paper-icon-button, iron-icon {
+          --paper-icon-button-ink-color: white;
+          width: 32px;
+          padding: 0px;
+          height: 14px;
+        }
+        paper-button {
+          text-transform: none;
+        }
+        .exl-filters {
+          min-height: 100px;
+        }
+        .exl-filter-panel {
+          border: 1px solid #3d3d3d;
+          border-radius: 5px;
+          padding: 5px;
+        }
+        .exl-filter-button {
+          position: relative;
+          left: 90%;
+        }
+        .exl-filter-button, .exl-apply-button {
+          color: #0085c3;
+        }
+        .right {
+          float: right;
+        }
+        [hidden] { display: none }
+      </style>
+    </custom-style>
+    <div class="exl-filters">
+      <div>
+        <paper-button raised on-click="toggleGrid" class="exl-filter-button">
+          <iron-icon icon="vaadin:filter"></iron-icon>Filter
+        </paper-button>
+      </div>
+      <div >
+        <iron-collapse id="collapse" class="exl-filter-panel">
+          <paper-checkbox checked="{{editing}}" style="margin-bottom: 20px">Enable Editing</paper-checkbox>
+          <paper-button raised on-click="apply" class="exl-apply-button">
+            <iron-icon icon="vaadin:check"></iron-icon>Apply
+          </paper-button>
+        </iron-collapse>
+    </div>
+    </div>
+  </template>
+  <script src="exl-filters.js"></script>
+</dom-module>

@@ -24,7 +24,8 @@
 <link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
-
+<link rel="import" href="../bower_components/iron-signals/iron-signals.html">
+<link rel="import" href="components/exl-tabs/exl-tabs.html">
 
 <dom-module id='exl-home'>
   <custom-style>
@@ -326,9 +327,9 @@
                   <div class="exl-claim-menu">
                     <div class="exl-claim-menu-item">
                       <strong> Claim List</strong>
-                      {{data}}
                       <div class="right">
-                        <paper-button raised class="indigo" on-click="openModal">Add New Claim</paper-button>
+                        <iron-signals on-iron-signal-mysignal="openModal"></iron-signals>
+                        <paper-button name="newClaim" raised class="indigo" on-paper-button-newClaim="openModal" on-click="openModal">Add New Claim</paper-button>
                       </div>
                       <paper-dialog id="dialog" modal role="alertdialog">
                           <h2 class="header">Scrollable</h2>
@@ -339,7 +340,7 @@
                         <div class="buttons footer">
                           <paper-button dialog-dismiss>Close</paper-button>
                         </div>
-                      </paper-dialog>
+                      </paper-dialog>                      
                   </div>
                   </div>
                   <!-- <div class="exl-file-upload">
@@ -350,6 +351,7 @@
                   attr-for-selected="name"
                   >
                 <my-test name="my-test"></my-test>
+                <exl-tabs name="exl-tabs"></exl-tabs>
                 <employee-list name="employee-list" data="{{data}}"></employee-list>
                 <employee-sales name="employee-sales"></employee-sales>
               </iron-pages>
@@ -466,15 +468,15 @@
         // Load page import on demand.
         console.log('page change detected...');
         var resolvedPageUrl = this.resolveUrl(page + '.html');
-        this.importHref(resolvedPageUrl, null, null, true);
+        //this.importHref(resolvedPageUrl, null, null, true);
       },
 
       //it is a legecy callback, called when the element has been created
      ready: function() {
-       this.page = 'employee-list';
+       this.page = 'exl-tabs';
      },
      changePage: function() {
-       this.page = 'employee-sales';
+       //this.page = 'employee-sales';
      },
 
      attributeChanged: function() {

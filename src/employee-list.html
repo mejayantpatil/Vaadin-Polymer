@@ -71,7 +71,6 @@
       </style>
     </custom-style>
     <iron-ajax auto url="https://demo.vaadin.com/demo-data/1.0/people?count=2" handle-as="json" last-response="{{users}}"></iron-ajax>
-    {{console.log(user)}}
     <paper-tabs selected="{{selected}}">
           <paper-tab>All</paper-tab>
           <paper-tab>Processed</paper-tab>
@@ -82,7 +81,6 @@
         <iron-pages selected="{{selected}}">
           <div>
             <paper-checkbox checked="{{editing}}" style="margin-bottom: 20px">Enable Editing</paper-checkbox>
-
             <vaadin-grid aria-label="Two-way Binding Example"
             items="[[users.result]]" id="grid" on-active-item-changed="_onActiveItemChanged"
             active-item="{{activeItem}}" size="2">
@@ -185,9 +183,7 @@
                   <paper-icon-button icon="vaadin:chevron-circle-up-o" on-click="expandGrid" data-index="[[index]]" hidden$="{{!expanded}}"></paper-icon-button>
                 </template>
               </vaadin-grid-column>
-
             </vaadin-grid>
-
           </div>
           <div>CONTENT TWO</div>
           <div>CONTENT THREE</div>
@@ -234,7 +230,9 @@
           notify: true
         }
       },
-
+      openModal: function(e, detail) {
+        this.fire('iron-signal', {name:'mysignal', data:'test'});
+      },
       expandGrid: function(e) {
         this.expanded ? this.$.grid.expandedItems =[] :
         this.$.grid.expandedItems = [this.users.result[e.model.index]];
