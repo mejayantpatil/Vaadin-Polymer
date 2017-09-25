@@ -18,16 +18,18 @@
           text-transform: none;
         }
         .exl-filters {
-          min-height: 100px;
+          /*min-height: 100px;*/
+          /*margin-top: 5px;*/
+          padding-top: 5px;
         }
         .exl-filter-panel {
-          border: 1px solid #3d3d3d;
+          border: 1px solid #dbdbdb;
           border-radius: 5px;
           padding: 5px;
         }
         .exl-filter-button {
           position: relative;
-          left: 90%;
+          left: 92%;
         }
         .exl-filter-button, .exl-apply-button {
           color: #0085c3;
@@ -36,6 +38,9 @@
           float: right;
         }
         [hidden] { display: none }
+        .exl-filter-list {
+          list-style: none;
+        }
       </style>
     </custom-style>
     <div class="exl-filters">
@@ -46,10 +51,31 @@
       </div>
       <div >
         <iron-collapse id="collapse" class="exl-filter-panel">
-          <paper-checkbox checked="{{editing}}" style="margin-bottom: 20px">Enable Editing</paper-checkbox>
-          <paper-button raised on-click="apply" class="exl-apply-button">
-            <iron-icon icon="vaadin:check"></iron-icon>Apply
-          </paper-button>
+          <div>
+            <labl>Document Type</lable>
+            <ul class="exl-filter-list">
+              <li>
+                <paper-checkbox style="margin-bottom: 5px">PDF</paper-checkbox>
+              </li>
+              <li>
+                <paper-checkbox style="margin-bottom: 5px">XML</paper-checkbox>
+              </li>
+              <li>
+                <paper-checkbox style="margin-bottom: 5px">DOC</paper-checkbox>
+              </li>
+              <li>
+                <paper-checkbox style="margin-bottom: 5px ">HTML</paper-checkbox>
+              </li>
+            </ul>
+          </div>
+          <div style="height:35px;">
+            <paper-button raised on-click="apply" class="exl-apply-button right">
+              <iron-icon icon="vaadin:check"></iron-icon>Apply
+            </paper-button>
+            <paper-button raised on-click="Reset" class="exl-apply-button right">
+              <iron-icon icon="vaadin:refresh"></iron-icon>Reset
+            </paper-button>
+          </div>
         </iron-collapse>
     </div>
     </div>

@@ -72,7 +72,7 @@
       z-index: 1;
     }
     *, app-toolbar, paper-item, vaddin-grid {
-      font-size: 12px !important;
+      font-size: 12px;
     }
 
     paper-progress {
@@ -177,13 +177,21 @@
     }
 
     .search {
+        padding: 10px;
+        border: 1px solid grey;
+        border-radius: 25px;
+        background-color: #d3d3d3;
+        outline: none;
+        width: 200px;
         --paper-input-container-input: {
           font-size: 12px;
         };
+
       }
 
-    .exl-title {
+    .exl-title, .claim-title {
       width: 20%;
+      font-size: 24px;
     }
     .exl-search {
       width: 35%;
@@ -270,6 +278,9 @@
     .dark {
       color: #a9a9a9;
     }
+    .hide {
+      display: none;
+    }
   </style>
 
 
@@ -292,15 +303,20 @@
 
             <app-header>
               <app-toolbar>
-                <paper-icon-button icon="vaadin:menu" on-click="_paperMenuTapped"></paper-icon-button>
+                <!-- <paper-icon-button icon="vaadin:menu" on-click="_paperMenuTapped"></paper-icon-button> -->
                 <div class="exl-title">LexConnection</div>
                 <div class="exl-search">
-                  <paper-input type="search" placeholder="Search" id="search" class="search">
+                  <paper-input type="search" placeholder="Search" id="search" class="search hide">
                     <paper-icon-button icon="vaadin:search" suffix ></paper-icon-button>
                   </paper-input>
                 </div>
                 <div class="exl-menus">
                   <div class="right">
+                  <iron-input>
+                    <input type="search" placeholder="Search" id="search" class="search"/>
+                    <paper-icon-button icon="vaadin:search" title="Notification" ></paper-icon-button>
+                  </iron-input>
+
                   <paper-icon-button icon="vaadin:bell-o" title="Notification" ></paper-icon-button>|
                   <paper-icon-button icon="vaadin:question-circle-o" title="Help" ></paper-icon-button>|
                   <paper-icon-button icon="vaadin:user" title="Profile"></paper-icon-button>
@@ -316,7 +332,7 @@
                   </paper-menu-button>
                 </div>
                 </div>
-                <paper-progress value="10" indeterminate bottom-item></paper-progress>
+                <!-- <paper-progress value="10" indeterminate bottom-item></paper-progress> -->
               </app-toolbar>
             </app-header>
             <!-- Body -->
@@ -326,7 +342,7 @@
                 <div class="exl-header">
                   <div class="exl-claim-menu">
                     <div class="exl-claim-menu-item">
-                      <strong> Claim List</strong>
+                      <span class="claim-title"> Claim List</span>
                       <div class="right">
                         <iron-signals on-iron-signal-mysignal="openModal"></iron-signals>
                         <paper-button name="newClaim" raised class="indigo" on-paper-button-newClaim="openModal" on-click="openModal">Add New Claim</paper-button>
@@ -340,7 +356,7 @@
                         <div class="buttons footer">
                           <paper-button dialog-dismiss>Close</paper-button>
                         </div>
-                      </paper-dialog>                      
+                      </paper-dialog>
                   </div>
                   </div>
                   <!-- <div class="exl-file-upload">

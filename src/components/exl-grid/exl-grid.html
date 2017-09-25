@@ -14,6 +14,7 @@
         <style>
           vaadin-grid {
             padding-top: 3px;
+            margin-top: 5px;
             border-radius: 5px;
           }
           paper-icon-button {
@@ -31,8 +32,8 @@
           }
 
           .row-details {
-            padding: 20px;
-            padding-top: 30px;
+            padding-right: 20px;
+            padding-left: 20px;
             background-color: lightgray;
 
           }
@@ -51,10 +52,14 @@
         </style>
     </custom-style>
 
-    <iron-ajax auto url="https://demo.vaadin.com/demo-data/1.0/people?count={{items}}" handle-as="json" last-response="{{users}}"></iron-ajax>
+    <iron-ajax auto
+    url="https://demo.vaadin.com/demo-data/1.0/people?count={{items}}"
+    handle-as="json"
+    last-response="{{users}}">
+    </iron-ajax>
 
     <div>
-      <exl-filters></exl-filters>      
+      <exl-filters></exl-filters>
     </div>
     <vaadin-grid aria-label="Two-way Binding Example"
     items="[[users.result]]" id="grid" on-active-item-changed="_onActiveItemChanged"
